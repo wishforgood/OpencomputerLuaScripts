@@ -109,7 +109,7 @@ function run()
         keepTable = filterTable(keepTable)
         for ItemLabel, keepNumber in pairs(keepTable) do
             handle(event.pull(0))
-            log(ItemLabel, 'CHECK')
+--            log(ItemLabel, 'CHECK')
             local haveItem = m.getItemsInNetwork({ label = ItemLabel })[1]
             if haveItem == nil then
                 log('No recipe', 'FAIL')
