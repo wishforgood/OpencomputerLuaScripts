@@ -126,6 +126,10 @@ function run()
                 else if requestedItems[ItemLabel] ~= nil and requestedItems[ItemLabel].isDone() then
                     log(ItemLabel, 'DONE')
                     requestedItems[ItemLabel] = nil
+                    else if requestedItems[ItemLabel] ~= nil and requestedItems[ItemLabel].isCanceled() then
+                        log(ItemLabel, 'FAIL')
+                        requestedItems[ItemLabel] = nil
+                    end
                 end
                 end
             end
