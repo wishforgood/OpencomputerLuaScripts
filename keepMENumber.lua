@@ -120,7 +120,6 @@ function run()
                     local canceled, reason = request.isCanceled()
                     if canceled then
                         log(ItemLabel, 'FAIL')
-                        requestedItems[ItemLabel] = nil
                     else
                         requestedItems[ItemLabel] = request
                     end
