@@ -30,6 +30,7 @@ local LEVEL_COLOR = {
     FAIL = 0xFF0000,
     DONE = 0x00FF00,
     CHECK = 0x00FFFF,
+    REQUEST = 0x00FFFF,
     SKIP = 0x0000FF,
 }
 
@@ -117,6 +118,7 @@ function run()
                 local haveNumber = haveItem['size']
                 if haveNumber < keepNumber and requestedItems[ItemLabel] == nil then
                     request = m.getCraftables({ label = ItemLabel })[1].request(keepNumber - haveNumber)
+                    log(ItemLabel, 'REQUEST')
                     local canceled, reason = request.isCanceled()
                     if canceled then
                         log(ItemLabel, 'FAIL')
