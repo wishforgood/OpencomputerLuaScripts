@@ -102,6 +102,7 @@ function filterTable(itemTable)
 end
 
 function run()
+    local requestedItems = {}
     while 1 do
         handle(event.pull(0))
         local keepTable = readTable()
@@ -114,18 +115,18 @@ function run()
                 log('No recipe', 'FAIL')
             else
                 local haveNumber = haveItem['size']
-                if haveNumber < keepNumber then
-                    local request = m.getCraftables({ label = ItemLabel })[1].request(keepNumber - haveNumber)
-                    repeat
-                        local canceled, reason = request.isCanceled()
-                        if canceled then
-                            log(reason, 'FAIL')
-                            break
-                        end
-                    until request.isDone()
+                if haveNumber < keepNumber and requestedItems[ItemLabel] == nil then
+                    request = m.getCraftables({ label = ItemLabel })[1].request(keepNumber - haveNumber)
+                    local canceled, reason = request.isCanceled()
+                    if canceled then
+                        log(ItemLabel, 'FAIL')
+                    else
+                        requestedItems[ItemLabel] = request
+                    end
+                else if requestedItems[ItemLabel] ~= nil and requestedItems[ItemLabel].isDone() then
                     log(ItemLabel, 'DONE')
-                else
-                    log(ItemLabel, 'SKIP')
+                    requestedItems[ItemLabel] = nil
+                end
                 end
             end
         end
