@@ -30,7 +30,7 @@ local LEVEL_COLOR = {
     FAIL = 0xFF0000,
     DONE = 0x00FF00,
     CHECK = 0x00FFFF,
-    REQUEST = 0x00FFFF,
+    REQE = 0x00FFFF,
     SKIP = 0x0000FF,
 }
 
@@ -110,7 +110,7 @@ function run()
         keepTable = filterTable(keepTable)
         for ItemLabel, keepNumber in pairs(keepTable) do
             handle(event.pull(0))
---            log(ItemLabel, 'CHECK')
+            --            log(ItemLabel, 'CHECK')
             local haveItem = m.getItemsInNetwork({ label = ItemLabel })[1]
             if haveItem == nil then
                 log('No recipe', 'FAIL')
@@ -118,7 +118,7 @@ function run()
                 local haveNumber = haveItem['size']
                 if haveNumber < keepNumber and requestedItems[ItemLabel] == nil then
                     request = m.getCraftables({ label = ItemLabel })[1].request(keepNumber - haveNumber)
-                    log(ItemLabel, 'REQUEST')
+                    log(ItemLabel, 'REQE')
                     local canceled, reason = request.isCanceled()
                     if canceled then
                         log(ItemLabel, 'FAIL')
@@ -131,8 +131,8 @@ function run()
                     else if requestedItems[ItemLabel] ~= nil and requestedItems[ItemLabel].isCanceled() then
                         log(ItemLabel, 'FAIL')
                         requestedItems[ItemLabel] = nil
+                        end
                     end
-                end
                 end
             end
         end
