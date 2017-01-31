@@ -1,18 +1,13 @@
---
--- User: Epix
--- Date: 2017/1/30
--- Time: 23:56
---
-
 local component = require('component')
 local sides = require('sides')
 local transposer = component.transposer
 
 --me interface blocking mode should be set to 'do not push'
 --alchemic chemistry set/input chest/output chest position relative to transposer
-local SET_P = sides.south
-local IN_P = sides.north
-local OUT_P = sides.west
+local SET_P = sides.down
+local IN_P = sides.east
+local OUT_P = sides.up
+local TRANS_P = sides.west
 local move = transposer.transferItem
 
 function tryMoveTo(sourceSide, sinkSide, count, sinkSlot)
@@ -37,8 +32,11 @@ function run()
                 break
             end
         end
-        repeat
-        until transposer.getStackInSlot(SET_P, 7) ~= nil
+        for transCount = 2, 6 do
+            tryMoveTo(IN_P, TRANS_P, 1, transCount - 1)
+        end
+--        repeat
+--        until transposer.getStackInSlot(SET_P, 7) ~= nil
         --note: can not move out items from slot 2~6
         --so it's impossible to automate recipe using water/lave bucket since they will left empty bucket in slot
         move(SET_P, OUT_P, 64, 7)
