@@ -41,6 +41,8 @@ function run()
                 break
             end
         end
+        repeat
+        until transposer.getStackInSlot(TRANS_P, 1) == nil
         for transCount = 2, 6 do
             tryMoveTo(IN_P, TRANS_P, 1, transCount - 1)
         end
