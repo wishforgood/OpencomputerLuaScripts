@@ -5,9 +5,9 @@ local transposer = component.transposer
 --me interface blocking mode should be set to 'do not push'
 --alchemic chemistry set/input chest/output chest position relative to transposer
 local SET_P = sides.down
-local IN_P = sides.east
+local IN_P = sides.west
 local OUT_P = sides.up
-local TRANS_P = sides.west
+local TRANS_P = sides.east
 local move = transposer.transferItem
 
 function tryMoveTo(sourceSide, sinkSide, count, sinkSlot)
