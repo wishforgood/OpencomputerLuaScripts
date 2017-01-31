@@ -1,6 +1,14 @@
-local component = require('component')
-local sides = require('sides')
-local transposer = component.transposer
+local sides = {
+    down = 0,
+    up = 1,
+    north = 2,
+    south = 3,
+    west = 4,
+    east = 5,
+}
+
+
+local transposer = component.proxy(component.list('transposer')())
 
 --me interface blocking mode should be set to 'do not push'
 --alchemic chemistry set/input chest/output chest position relative to transposer
