@@ -30,14 +30,25 @@ function tryMoveTo(sourceSide, sinkSide, count, sinkSlot)
     return false
 end
 
+function checkInventory(targetSide)
+    for i = 1, 27 do
+        repeat
+        until transposer.getStackInSlot(targetSide, i) == nil
+    end
+end
+
 function run()
     while 1 do
         repeat
             move(SET_P, OUT_P, 64, 7)
         until transposer.getStackInSlot(IN_P, 1) ~= nil
+        for waitTick = 1, 60 do
+            move(SET_P, OUT_P, 64, 7)
+        end
         for targetSlot = 2, 6 do
             tryMoveTo(IN_P, SET_P, 1, targetSlot)
         end
+        checkInventory(TRANS_P)
         for transCount = 2, 6 do
             pcall(tryMoveTo, IN_P, TRANS_P, 1, transCount - 1)
         end
