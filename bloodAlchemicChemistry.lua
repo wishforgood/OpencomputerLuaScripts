@@ -19,11 +19,9 @@ local TRANS_P = sides.east
 local move = transposer.transferItem
 
 function tryMoveTo(sourceSide, sinkSide, count, sourceSlot, sinkSlot)
-    if transposer.getStackInSlot(sourceSide, sourceSlot) ~= nil then
+    local itemTable = transposer.getStackInSlot(sourceSide, sourceSlot)
+    if itemTable ~= nil then
         local moveResult = move(sourceSide, sinkSide, count, sourceSlot, sinkSlot)
-        if transposer.getStackInSlot(sourceSide, sourceSlot) ~= nil then
-            return false
-        end
         if moveResult == true then
             return true
         end
@@ -48,8 +46,9 @@ function run()
         end
         local sourceSlot = 1
         for targetSlot = 2, 6 do
+            local itemTable = transposer.getStackInSlot(IN_P, sourceSlot)
             local moveResult = tryMoveTo(IN_P, SET_P, 1, sourceSlot, targetSlot)
-            if moveResult == false then
+            if itemTable ~= 1 then
                 sourceSlot = sourceSlot - 1
             end
             sourceSlot = sourceSlot + 1
@@ -63,10 +62,11 @@ function run()
         end
         pcall(function()
             local sourceSlot = 1
+            local itemTable = transposer.getStackInSlot(IN_P, sourceSlot)
             for transCount = 2, 6 do
-                local moveResult = tryMoveTo(IN_P, TRANS_P, 1, transCount - 1, transCount - 1)
+                local moveResult = tryMoveTo(IN_P, TRANS_P, 1, sourceSlot, transCount - 1)
             end
-            if moveResult == false then
+            if itemTable ~= 1 then
                 sourceSlot = sourceSlot - 1
             end
             sourceSlot = sourceSlot + 1
