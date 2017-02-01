@@ -49,6 +49,9 @@ function run()
             tryMoveTo(IN_P, SET_P, 1, targetSlot)
         end
         checkInventory(TRANS_P)
+        repeat
+            move(SET_P, OUT_P, 64, 7)
+        until transposer.getStackInSlot(IN_P, 1) ~= nil
         for waitTick = 1, 60 do
             move(SET_P, OUT_P, 64, 7)
         end
