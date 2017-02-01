@@ -49,6 +49,9 @@ function run()
             tryMoveTo(IN_P, SET_P, 1, targetSlot)
         end
         checkInventory(TRANS_P)
+        for waitTick = 1, 60 do
+            move(SET_P, OUT_P, 64, 7)
+        end
         for transCount = 2, 6 do
             pcall(tryMoveTo, IN_P, TRANS_P, 1, transCount - 1)
         end
