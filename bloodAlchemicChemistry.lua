@@ -19,7 +19,7 @@ local TRANS_P = sides.east
 local move = transposer.transferItem
 
 function tryMoveTo(sourceSide, sinkSide, count, sourceSlot, sinkSlot)
-    if transposer.getStackInSlot(sourceSide, i) ~= nil then
+    if transposer.getStackInSlot(sourceSide, sourceSlot) ~= nil then
         local moveResult = move(sourceSide, sinkSide, count, sourceSlot, sinkSlot)
         if moveResult == true then
             return true
@@ -44,7 +44,7 @@ function run()
             move(SET_P, OUT_P, 64, 7)
         end
         for targetSlot = 2, 6 do
-            tryMoveTo(IN_P, SET_P, 1, targetSlot, targetSlot - 1)
+            tryMoveTo(IN_P, SET_P, 1, targetSlot - 1, targetSlot)
         end
         checkInventory(TRANS_P)
         repeat
@@ -54,7 +54,7 @@ function run()
             move(SET_P, OUT_P, 64, 7)
         end
         for transCount = 2, 6 do
-            pcall(tryMoveTo, IN_P, TRANS_P, 1, transCount - 1)
+            pcall(tryMoveTo, IN_P, TRANS_P, 1, transCount -1, transCount - 1)
         end
         --        repeat
         --        until transposer.getStackInSlot(SET_P, 7) ~= nil
