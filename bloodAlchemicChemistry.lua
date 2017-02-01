@@ -36,18 +36,13 @@ function run()
             move(SET_P, OUT_P, 64, 7)
         until transposer.getStackInSlot(IN_P, 1) ~= nil
         for targetSlot = 2, 6 do
-            local moveResult = tryMoveTo(IN_P, SET_P, 1, targetSlot)
-            if moveResult == false then
-                break
-            end
+            tryMoveTo(IN_P, SET_P, 1, targetSlot)
         end
-        repeat
-        until transposer.getStackInSlot(TRANS_P, 1) == nil
         for transCount = 2, 6 do
-            tryMoveTo(IN_P, TRANS_P, 1, transCount - 1)
+            pcall(tryMoveTo, IN_P, TRANS_P, 1, transCount - 1)
         end
---        repeat
---        until transposer.getStackInSlot(SET_P, 7) ~= nil
+        --        repeat
+        --        until transposer.getStackInSlot(SET_P, 7) ~= nil
         --note: can not move out items from slot 2~6
         --so it's impossible to automate recipe using water/lave bucket since they will left empty bucket in slot
     end
