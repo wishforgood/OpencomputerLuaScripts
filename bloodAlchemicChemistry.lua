@@ -18,15 +18,22 @@ local OUT_P = sides.up
 local TRANS_P = sides.east
 local move = transposer.transferItem
 
-function tryMoveTo(sourceSide, sinkSide, count, sourceSlot, sinkSlot)
-    local itemTable = transposer.getStackInSlot(sourceSide, sourceSlot)
-    if itemTable ~= nil then
-        local moveResult = move(sourceSide, sinkSide, count, sourceSlot, sinkSlot)
-        if moveResult == true then
-            return true
+function tryMoveTo(sourceSide, sinkSide, count, trans)
+    local sourceCount = 1
+    for moveCount = 2, 6 do
+        local itemTable = transposer.getStackInSlot(sourceSide, sourceCount)
+        if itemTable ~= nil then
+            if trans == false then
+                move(sourceSide, sinkSide, count, sourceCount, moveCount)
+            else
+                move(sourceSide, sinkSide, count, sourceCount, moveCount - 1)
+            end
+            if itemTable.size ~= 1 then
+                sourceCount = sourceCount - 1
+            end
         end
+        sourceCount = sourceCount + 1
     end
-    return false
 end
 
 function checkInventory(targetSide)
@@ -44,15 +51,7 @@ function run()
         for waitTick = 1, 60 do
             move(SET_P, OUT_P, 64, 7)
         end
-        local sourceSlot = 1
-        for targetSlot = 2, 6 do
-            local itemTable = transposer.getStackInSlot(IN_P, sourceSlot)
-            local moveResult = tryMoveTo(IN_P, SET_P, 1, sourceSlot, targetSlot)
-            if itemTable ~= 1 then
-                sourceSlot = sourceSlot - 1
-            end
-            sourceSlot = sourceSlot + 1
-        end
+        tryMoveTo(IN_P, SET_P, 1, false)
         checkInventory(TRANS_P)
         repeat
             move(SET_P, OUT_P, 64, 7)
@@ -61,15 +60,7 @@ function run()
             move(SET_P, OUT_P, 64, 7)
         end
         pcall(function()
-            local sourceSlot = 1
-            local itemTable = transposer.getStackInSlot(IN_P, sourceSlot)
-            for transCount = 2, 6 do
-                local moveResult = tryMoveTo(IN_P, TRANS_P, 1, sourceSlot, transCount - 1)
-            end
-            if itemTable ~= 1 then
-                sourceSlot = sourceSlot - 1
-            end
-            sourceSlot = sourceSlot + 1
+            tryMoveTo(IN_P, TRANS_P, 1, true)
         end)
         --        repeat
         --        until transposer.getStackInSlot(SET_P, 7) ~= nil
